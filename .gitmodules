@@ -1,0 +1,3 @@
+[submodule "uprobe-chromium"]
+	path = uprobe-chromium
+	url = git@github.com:UT-Security/uprobe-chromium.git
