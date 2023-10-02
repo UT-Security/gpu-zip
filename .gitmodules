@@ -1,3 +1,6 @@
 [submodule "uprobe-chromium"]
 	path = uprobe-chromium
 	url = git@github.com:UT-Security/uprobe-chromium.git
+[submodule "i915-tools"]
+	path = i915-tools
+	url = git@github.com:UT-Security/i915-tools.git
