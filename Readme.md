@@ -26,6 +26,7 @@ pip install py-cpuinfo
 5. `04-chrome-poc` contains the two PoCs in Section 5 of the paper. Reproducing Figure 14 and 15 can be done by uprobing Chrome and then run the PoCs with scripts and driver code similar to the ones in `01-leakage-channel`.
 6. `poc` contains a OpenGL workload that attempts to trigger iGPU graphical data compression.
 7. `uprobe-chromium` attaches a uprobe to the `Math.sqrt()` function in Chrome.
+8. `i915-tools` documents our reverse-engineered proprietary compression algorithms of Intel and AMD iGPUs.
 
 ## Tested machine
 
